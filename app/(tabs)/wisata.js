@@ -5,6 +5,7 @@ import { useState } from "react";
 import WisataHeader from "../../components/wisata/WisataHeader";
 import WisataCategory from "../../components/wisata/WisataCategory";
 import WisataList from "../../components/wisata/WisataList";
+
 import Footer from "../../components/Footer";
 
 export default function WisataScreen() {

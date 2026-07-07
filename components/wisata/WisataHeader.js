@@ -1,3 +1,4 @@
+import React from "react";
 import { View, Text, StyleSheet, Image } from "react-native";
 
 export default function WisataHeader() {
@@ -7,13 +8,16 @@ export default function WisataHeader() {
         source={require("../../assets/images/gunungsari.jpeg")}
         style={styles.image}
       />
+
       <View style={styles.overlay} />
 
       <View style={styles.textContainer}>
-        <Text style={styles.small}>Wisata Lokal</Text>
+        <Text style={styles.label}>Wisata Lokal</Text>
+
         <Text style={styles.title}>Wisata Gunungsari</Text>
-        <Text style={styles.desc}>
-          Jelajahi budaya, kuliner, dan keindahan desa Gunungsari
+
+        <Text style={styles.description}>
+          Jelajahi budaya, kuliner, dan keindahan Desa Gunungsari.
         </Text>
       </View>
     </View>
@@ -22,34 +26,49 @@ export default function WisataHeader() {
 
 const styles = StyleSheet.create({
   container: {
-    height: 280,
+    width: "100%",
+    height: 220,
     position: "relative",
+    marginBottom: 30,
+    backgroundColor: "#ddd",
   },
+
   image: {
     width: "100%",
     height: "100%",
     position: "absolute",
+    resizeMode: "cover",
   },
+
   overlay: {
     ...StyleSheet.absoluteFillObject,
-    backgroundColor: "rgba(0,0,0,0.4)",
+    backgroundColor: "rgba(0,0,0,0.42)",
   },
+
   textContainer: {
     position: "absolute",
-    bottom: 20,
-    left: 20,
+    left: 22,
+    right: 22,
+    bottom: 22,
   },
-  small: {
+
+  label: {
     color: "#E6C09B",
-    fontWeight: "700",
+    fontSize: 13,
+    fontWeight: "800",
+    marginBottom: 5,
   },
+
   title: {
-    color: "#fff",
-    fontSize: 26,
+    color: "#FFFFFF",
+    fontSize: 29,
     fontWeight: "900",
+    marginBottom: 6,
   },
-  desc: {
-    color: "#eee",
-    marginTop: 6,
+
+  description: {
+    color: "#F5F5F5",
+    fontSize: 14,
+    lineHeight: 20,
   },
 });

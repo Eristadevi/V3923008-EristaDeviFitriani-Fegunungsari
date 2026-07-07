@@ -1,259 +1,293 @@
 import React from "react";
 
 import {
-  View,
-  Text,
-  StyleSheet,
   Image,
+  StyleSheet,
+  Text,
   TouchableOpacity,
+  View,
 } from "react-native";
 
-import {
-  Ionicons,
-  Feather,
-} from "@expo/vector-icons";
+import { Ionicons } from "@expo/vector-icons";
+import { useRouter } from "expo-router";
 
-import { router } from "expo-router";
+export default function WisataCard({ item }) {
+  const router = useRouter();
 
-export default function WisataCard({
-  item,
-}) {
+  const priceType = item.priceType || "free";
+
+  const isPundensari = item.isPundensari;
+  const isPaid = priceType === "paid";
+  const isConsult = priceType === "consult";
+  const isCoin = priceType === "coin";
+  const isFree = priceType === "free";
+
+  const goToDetail = () => {
+    router.push({
+      pathname: "/detailwisata",
+      params: {
+        id: String(item.id),
+        title: item.title,
+      },
+    });
+  };
+
+  const goToTukarKoin = () => {
+    router.push("/tukarkoin");
+  };
+
+  const goToBookingWisata = () => {
+    router.push({
+      pathname: "/bookingwisata",
+      params: {
+        id: String(item.id),
+        title: item.title,
+        category: item.category || "",
+        priceType: priceType,
+        priceLabel: item.priceLabel || getDefaultPriceLabel(),
+        nominalSatuan: String(item.nominalSatuan || item.nominal || 0),
+      },
+    });
+  };
+
+  const getDefaultPriceLabel = () => {
+    if (isPaid) return "Berbayar";
+    if (isConsult) return "Menyesuaikan kebutuhan";
+    if (isCoin) return "Menggunakan koin bambu";
+    return "Tiket masuk gratis";
+  };
+
+  const getPriceIcon = () => {
+    if (isPaid) return "card";
+    if (isConsult) return "help-circle";
+    if (isCoin) return "cash";
+    return "checkmark-circle";
+  };
+
+  const getPriceColor = () => {
+    if (isPaid) return "#9A5A20";
+    if (isConsult) return "#7A4EAB";
+    if (isCoin) return "#8B5E34";
+    return "#2E7D32";
+  };
+
+  const getPriceBoxStyle = () => {
+    if (isPaid) return styles.paidBox;
+    if (isConsult) return styles.consultBox;
+    if (isCoin) return styles.coinBox;
+    return styles.freeBox;
+  };
+
+  const getPriceTextStyle = () => {
+    if (isPaid) return styles.paidText;
+    if (isConsult) return styles.consultText;
+    if (isCoin) return styles.coinText;
+    return styles.freeText;
+  };
+
+  const getActionText = () => {
+    if (isPaid) return "Booking";
+    return "Ajukan Kunjungan";
+  };
+
   return (
-    <TouchableOpacity
-      activeOpacity={0.9}
-      style={styles.card}
-      onPress={() =>
-        router.push(
-          `/detailwisata?id=${item.id}`
-        )
-      }
-    >
-      {/* IMAGE */}
-      <Image
-        source={item.image}
-        style={styles.image}
-      />
+    <View style={styles.card}>
+      <Image source={item.image} style={styles.image} />
 
-      {/* CONTENT */}
       <View style={styles.content}>
-        {/* TOP */}
-        <View style={styles.topRow}>
-          {/* CATEGORY */}
-          <View style={styles.categoryBox}>
-            <Text style={styles.category}>
-              {item.category}
-            </Text>
-          </View>
+        <Text style={styles.name}>{item.title}</Text>
 
-          {/* RATING */}
-          <View style={styles.ratingBox}>
-            <Ionicons
-              name="star"
-              size={15}
-              color="#fff"
-            />
+        <Text style={styles.description}>{item.description}</Text>
 
-            <Text style={styles.rating}>
-              {item.rating}
-            </Text>
-          </View>
+        <View style={[styles.priceBox, getPriceBoxStyle()]}>
+          <Ionicons
+            name={getPriceIcon()}
+            size={17}
+            color={getPriceColor()}
+          />
+
+          <Text
+            style={[styles.priceText, getPriceTextStyle()]}
+            numberOfLines={1}
+          >
+            {item.priceLabel || getDefaultPriceLabel()}
+          </Text>
         </View>
 
-        {/* TITLE */}
-        <Text style={styles.title}>
-          {item.title}
-        </Text>
-
-        {/* DESCRIPTION */}
-        <Text
-          style={styles.description}
-          numberOfLines={2}
-        >
-          {item.description}
-        </Text>
-
-        {/* FOOTER */}
-        <View style={styles.footer}>
-          {/* PRICE */}
-          <View>
-            <Text
-              style={styles.priceLabel}
-            >
-              Mulai dari
-            </Text>
-
-            <Text style={styles.price}>
-              {item.price}
-            </Text>
-          </View>
-
-          {/* BUTTON */}
-          <TouchableOpacity
-            style={styles.button}
-          >
-            <Text
-              style={styles.buttonText}
-            >
-              Detail
-            </Text>
-
-            <Feather
-              name="arrow-right"
-              size={16}
-              color="#fff"
-            />
+        <View style={styles.buttonRow}>
+          <TouchableOpacity style={styles.detailButton} onPress={goToDetail}>
+            <Text style={styles.detailButtonText}>Detail</Text>
+            <Ionicons name="arrow-forward" size={17} color="#FFFFFF" />
           </TouchableOpacity>
+
+          {isPundensari ? (
+            <TouchableOpacity style={styles.coinButton} onPress={goToTukarKoin}>
+              <Text style={styles.coinButtonText}>Tukar Koin</Text>
+            </TouchableOpacity>
+          ) : (
+            <TouchableOpacity
+              style={styles.visitButton}
+              onPress={goToBookingWisata}
+            >
+              <Text style={styles.visitButtonText} numberOfLines={1}>
+                {getActionText()}
+              </Text>
+              <Ionicons name="calendar" size={16} color="#FFFFFF" />
+            </TouchableOpacity>
+          )}
         </View>
       </View>
-    </TouchableOpacity>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   card: {
-    backgroundColor: "#fff",
-
-    borderRadius: 28,
-
+    backgroundColor: "#FFFFFF",
+    borderRadius: 22,
+    marginHorizontal: 20,
+    marginBottom: 28,
     overflow: "hidden",
 
-    marginBottom: 28,
-
     elevation: 5,
+    shadowColor: "#000",
+    shadowOpacity: 0.12,
+    shadowRadius: 8,
+    shadowOffset: {
+      width: 0,
+      height: 4,
+    },
   },
 
-  /* IMAGE */
   image: {
     width: "100%",
-    height: 240,
+    height: 205,
+    resizeMode: "cover",
   },
 
-  /* CONTENT */
   content: {
-    padding: 22,
+    paddingHorizontal: 18,
+    paddingTop: 18,
+    paddingBottom: 18,
   },
 
-  /* TOP */
-  topRow: {
-    flexDirection: "row",
-
-    justifyContent:
-      "space-between",
-
-    alignItems: "center",
-
-    marginBottom: 18,
-  },
-
-  categoryBox: {
-    backgroundColor: "#B58B63",
-
-    paddingVertical: 8,
-    paddingHorizontal: 16,
-
-    borderRadius: 30,
-  },
-
-  category: {
-    color: "#fff",
-
-    fontSize: 13,
-
-    fontWeight: "700",
-  },
-
-  ratingBox: {
-    backgroundColor: "#D4A373",
-
-    flexDirection: "row",
-
-    alignItems: "center",
-
-    gap: 6,
-
-    paddingVertical: 8,
-    paddingHorizontal: 14,
-
-    borderRadius: 30,
-  },
-
-  rating: {
-    color: "#fff",
-
-    fontWeight: "800",
-
-    fontSize: 14,
-  },
-
-  /* TITLE */
-  title: {
-    fontSize: 28,
-
+  name: {
+    fontSize: 22,
     fontWeight: "900",
+    color: "#222222",
+    marginBottom: 8,
+  },
 
-    color: "#222",
-
+  description: {
+    fontSize: 14,
+    color: "#666666",
+    lineHeight: 22,
     marginBottom: 14,
   },
 
-  /* DESCRIPTION */
-  description: {
-    color: "#666",
-
-    fontSize: 15,
-
-    lineHeight: 27,
-
-    marginBottom: 24,
-  },
-
-  /* FOOTER */
-  footer: {
+  priceBox: {
     flexDirection: "row",
-
-    justifyContent:
-      "space-between",
-
     alignItems: "center",
+    alignSelf: "flex-start",
+    gap: 6,
+    paddingHorizontal: 12,
+    paddingVertical: 7,
+    borderRadius: 20,
+    marginBottom: 18,
+    maxWidth: "100%",
   },
 
-  priceLabel: {
-    color: "#777",
+  freeBox: {
+    backgroundColor: "#EAF6EE",
+  },
 
+  paidBox: {
+    backgroundColor: "#FFF1DF",
+  },
+
+  consultBox: {
+    backgroundColor: "#F1EAFE",
+  },
+
+  coinBox: {
+    backgroundColor: "#F5E9DC",
+  },
+
+  priceText: {
     fontSize: 13,
-
     fontWeight: "800",
-
-    marginBottom: 6,
   },
 
-  price: {
-    color: "#B58B63",
-
-    fontSize: 24,
-
-    fontWeight: "900",
+  freeText: {
+    color: "#2E7D32",
   },
 
-  /* BUTTON */
-  button: {
-    backgroundColor: "#B58B63",
+  paidText: {
+    color: "#9A5A20",
+  },
 
+  consultText: {
+    color: "#7A4EAB",
+  },
+
+  coinText: {
+    color: "#8B5E34",
+  },
+
+  buttonRow: {
     flexDirection: "row",
-
-    alignItems: "center",
-
-    gap: 8,
-
-    paddingVertical: 12,
-    paddingHorizontal: 18,
-
-    borderRadius: 30,
+    gap: 10,
   },
 
-  buttonText: {
-    color: "#fff",
+  detailButton: {
+    flex: 0.9,
+    backgroundColor: "#C08B5C",
+    paddingVertical: 14,
+    paddingHorizontal: 8,
+    borderRadius: 24,
+    alignItems: "center",
+    justifyContent: "center",
+    flexDirection: "row",
+    gap: 6,
+  },
 
-    fontWeight: "700",
+  detailButtonText: {
+    color: "#FFFFFF",
+    fontSize: 15,
+    fontWeight: "800",
+  },
+
+  coinButton: {
+    flex: 1.1,
+    backgroundColor: "#8B5E34",
+    paddingVertical: 14,
+    paddingHorizontal: 8,
+    borderRadius: 24,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+
+  coinButtonText: {
+    color: "#FFFFFF",
+    fontSize: 15,
+    fontWeight: "800",
+  },
+
+  visitButton: {
+    flex: 1.35,
+    backgroundColor: "#2E7D32",
+    paddingVertical: 14,
+    paddingHorizontal: 8,
+    borderRadius: 24,
+    alignItems: "center",
+    justifyContent: "center",
+    flexDirection: "row",
+    gap: 5,
+  },
+
+  visitButtonText: {
+    color: "#FFFFFF",
+    fontSize: 13,
+    fontWeight: "900",
   },
 });

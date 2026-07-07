@@ -2,69 +2,45 @@ import React from "react";
 import { FlatList, StyleSheet, View } from "react-native";
 
 import WisataCard from "./WisataCard";
-
-const wisataData = [
-  {
-    id: 1,
-    title: "Pasar Pundensari",
-    category: "Buatan",
-    price: "Rp 5.000",
-    rating: 4.8,
-    description: "Pasar wisata budaya khas Desa Gunungsari.",
-    image: require("../../assets/images/pundensari.jpeg"),
-  },
-  {
-    id: 2,
-    title: "Museum Purabaya",
-    category: "Edukasi",
-    price: "Rp 15.000",
-    rating: 4.7,
-    description: "Museum sejarah budaya dan edukasi wisata.",
-    image: require("../../assets/images/museum.jpeg"),
-  },
-  {
-    id: 3,
-    title: "Batik Demung",
-    category: "UMKM",
-    price: "Rp 20.000",
-    rating: 4.9,
-    description: "Wisata edukasi batik khas Desa Gunungsari.",
-    image: require("../../assets/images/batikk.jpg"),
-  },
-];
+import WisataHeader from "./WisataHeader";
+import Footer from "../Footer";
+import { wisataData } from "./wisataData";
 
 export default function WisataList({
   category,
   ListHeaderComponent,
   ListFooterComponent,
 }) {
-  const filteredData =
-    category === "Semua"
+  const filteredWisata =
+    !category || category === "Semua"
       ? wisataData
       : wisataData.filter((item) => item.category === category);
 
   return (
-    <View style={styles.container}>
-      <FlatList
-        data={filteredData}
-        keyExtractor={(item) => item.id.toString()}
-        renderItem={({ item }) => <WisataCard item={item} />}
-        ListHeaderComponent={ListHeaderComponent}
-        ListFooterComponent={ListFooterComponent}
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={styles.listContent}
-      />
-    </View>
+    <FlatList
+      data={filteredWisata}
+      keyExtractor={(item) => item.id.toString()}
+      renderItem={({ item }) => <WisataCard item={item} />}
+      ListHeaderComponent={ListHeaderComponent || <WisataHeader />}
+      ListFooterComponent={
+        <View style={styles.footerWrapper}>
+          {ListFooterComponent || <Footer />}
+        </View>
+      }
+      showsVerticalScrollIndicator={false}
+      contentContainerStyle={styles.listContent}
+    />
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
   listContent: {
-    paddingHorizontal: 24,
-    paddingTop: 20,
-    paddingBottom: 120,
+    paddingTop: 0,
+    paddingBottom: 150,
+  },
+
+  footerWrapper: {
+    marginHorizontal: 20,
+    marginTop: 4,
   },
 });

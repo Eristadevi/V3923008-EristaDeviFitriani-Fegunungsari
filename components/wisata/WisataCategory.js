@@ -1,76 +1,15 @@
-import React, {
-  useState,
-} from "react";
+import React from "react";
 
-import {
-  View,
-  Text,
-  StyleSheet,
-} from "react-native";
-
-import DropDownPicker from "react-native-dropdown-picker";
+import { StyleSheet, Text, View } from "react-native";
 
 export default function WisataCategory() {
-  const [open, setOpen] =
-    useState(false);
-
-  const [value, setValue] =
-    useState(null);
-
-  const [items, setItems] =
-    useState([
-      {
-        label: "Wisata Alam",
-        value: "alam",
-      },
-
-      {
-        label: "Wisata Buatan",
-        value: "buatan",
-      },
-
-      {
-        label: "Wisata Budaya",
-        value: "budaya",
-      },
-
-      {
-        label: "Kuliner",
-        value: "kuliner",
-      },
-
-      {
-        label: "Edukasi",
-        value: "edukasi",
-      },
-    ]);
-
   return (
     <View style={styles.container}>
-      {/* TITLE */}
-      <Text style={styles.label}>
-        Jenis Destinasi
-      </Text>
+      <Text style={styles.title}>Pilihan Wisata</Text>
 
-      {/* DROPDOWN */}
-      <DropDownPicker
-        open={open}
-        value={value}
-        items={items}
-        setOpen={setOpen}
-        setValue={setValue}
-        setItems={setItems}
-        placeholder="Pilih Jenis Destinasi"
-        style={styles.dropdown}
-        dropDownContainerStyle={
-          styles.dropdownContainer
-        }
-        textStyle={styles.text}
-        placeholderStyle={
-          styles.placeholder
-        }
-        listMode="SCROLLVIEW"
-      />
+      <Text style={styles.description}>
+        Pilih destinasi wisata yang ingin kamu kunjungi.
+      </Text>
     </View>
   );
 }
@@ -78,49 +17,20 @@ export default function WisataCategory() {
 const styles = StyleSheet.create({
   container: {
     paddingHorizontal: 24,
-
-    paddingTop: 30,
-
-    zIndex: 1000,
+    paddingTop: 24,
+    paddingBottom: 14,
   },
 
-  /* LABEL */
-  label: {
-    fontSize: 20,
-
-    fontWeight: "700",
-
-    color: "#222",
-
-    marginBottom: 18,
+  title: {
+    color: "#222222",
+    fontSize: 21,
+    fontWeight: "900",
+    marginBottom: 6,
   },
 
-  /* DROPDOWN */
-  dropdown: {
-    minHeight: 65,
-
-    borderColor: "#E5E5E5",
-
-    borderRadius: 16,
-
-    paddingHorizontal: 12,
-  },
-
-  dropdownContainer: {
-    borderColor: "#E5E5E5",
-
-    borderRadius: 16,
-  },
-
-  text: {
-    fontSize: 17,
-
-    color: "#222",
-  },
-
-  placeholder: {
-    color: "#999",
-
-    fontSize: 17,
+  description: {
+    color: "#777777",
+    fontSize: 14,
+    lineHeight: 20,
   },
 });

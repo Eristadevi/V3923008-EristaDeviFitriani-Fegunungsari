@@ -7,42 +7,38 @@ import {
   TouchableOpacity,
 } from "react-native";
 
-import {
-  Feather,
-  Ionicons,
-} from "@expo/vector-icons";
-
+import { Feather, Ionicons } from "@expo/vector-icons";
 import { router } from "expo-router";
 import { MotiView } from "moti";
 
 export default function ServiceSection() {
+  const goToFasilitas = (type) => {
+    router.push({
+      pathname: "/fasilitas",
+      params: {
+        type,
+      },
+    });
+  };
+
   return (
     <View style={styles.container}>
-      {/* BADGE */}
       <View style={styles.badgeWrapper}>
         <View style={styles.badge}>
-          <Text style={styles.smallText}>
-            FASILITAS WISATA
-          </Text>
+          <Text style={styles.smallText}>FASILITAS WISATA</Text>
         </View>
       </View>
 
-      {/* HEADING */}
       <Text style={styles.heading}>
-        Nikmati Pengalaman {"\n"}
-        Wisata Terbaik
+        Nikmati Pengalaman{"\n"}Wisata Terbaik
       </Text>
 
-      {/* SUBTITLE */}
       <Text style={styles.subHeading}>
-        Jelajahi kuliner lokal dan
-        penginapan nyaman di sekitar
-        Desa Wisata Gunungsari.
+        Temukan pilihan kuliner lokal dan penginapan nyaman di sekitar Desa
+        Wisata Gunungsari.
       </Text>
 
-      {/* CARDS */}
       <View style={styles.cardWrapper}>
-        {/* KULINER */}
         <MotiView
           from={{
             opacity: 0,
@@ -60,48 +56,37 @@ export default function ServiceSection() {
           <TouchableOpacity
             activeOpacity={0.9}
             style={styles.card}
-            onPress={() =>
-              router.push("/kuliner")
-            }
+            onPress={() => goToFasilitas("kuliner")}
           >
-            {/* ICON */}
-            <View style={styles.iconBox}>
-              <Ionicons
-                name="restaurant-outline"
-                size={38}
-                color="#B58B63"
-              />
+            <View style={styles.cardTop}>
+              <View style={styles.iconBox}>
+                <Ionicons
+                  name="restaurant-outline"
+                  size={36}
+                  color="#8B5E34"
+                />
+              </View>
+
+              <View style={styles.countBadge}>
+                <Text style={styles.countText}>5 Lokasi</Text>
+              </View>
             </View>
 
-            {/* TITLE */}
-            <Text style={styles.cardTitle}>
-              Kuliner
-            </Text>
+            <Text style={styles.cardTitle}>Kuliner</Text>
 
-            {/* DESC */}
             <Text style={styles.cardDesc}>
-              Temukan makanan khas dan
-              kuliner tradisional lokal
-              yang autentik di sekitar
-              wisata Gunungsari.
+              Temukan makanan khas, kuliner tradisional, dan produk UMKM lokal
+              yang dapat dikunjungi wisatawan.
             </Text>
 
-            {/* LINK */}
             <View style={styles.linkRow}>
-              <Text style={styles.linkText}>
-                Lihat Selengkapnya
-              </Text>
+              <Text style={styles.linkText}>Lihat Selengkapnya</Text>
 
-              <Feather
-                name="arrow-right"
-                size={16}
-                color="#B58B63"
-              />
+              <Feather name="arrow-right" size={16} color="#8B5E34" />
             </View>
           </TouchableOpacity>
         </MotiView>
 
-        {/* PENGINAPAN */}
         <MotiView
           from={{
             opacity: 0,
@@ -119,42 +104,29 @@ export default function ServiceSection() {
           <TouchableOpacity
             activeOpacity={0.9}
             style={styles.card}
-            onPress={() =>
-              router.push("/penginapan")
-            }
+            onPress={() => goToFasilitas("penginapan")}
           >
-            {/* ICON */}
-            <View style={styles.iconBox}>
-              <Ionicons
-                name="bed-outline"
-                size={38}
-                color="#B58B63"
-              />
+            <View style={styles.cardTop}>
+              <View style={styles.iconBox}>
+                <Ionicons name="bed-outline" size={36} color="#8B5E34" />
+              </View>
+
+              <View style={styles.countBadge}>
+                <Text style={styles.countText}>5 Lokasi</Text>
+              </View>
             </View>
 
-            {/* TITLE */}
-            <Text style={styles.cardTitle}>
-              Penginapan
-            </Text>
+            <Text style={styles.cardTitle}>Penginapan</Text>
 
-            {/* DESC */}
             <Text style={styles.cardDesc}>
-              Nikmati hotel dan homestay
-              nyaman dekat destinasi
-              wisata Desa Gunungsari.
+              Lihat pilihan homestay, rumah singgah, dan penginapan sekitar
+              Desa Wisata Gunungsari.
             </Text>
 
-            {/* LINK */}
             <View style={styles.linkRow}>
-              <Text style={styles.linkText}>
-                Lihat Selengkapnya
-              </Text>
+              <Text style={styles.linkText}>Lihat Selengkapnya</Text>
 
-              <Feather
-                name="arrow-right"
-                size={16}
-                color="#B58B63"
-              />
+              <Feather name="arrow-right" size={16} color="#8B5E34" />
             </View>
           </TouchableOpacity>
         </MotiView>
@@ -164,142 +136,126 @@ export default function ServiceSection() {
 }
 
 const styles = StyleSheet.create({
-  /* CONTAINER */
   container: {
-    paddingTop: 55,
+    paddingTop: 56,
     paddingBottom: 90,
-
     backgroundColor: "#FAF7F2",
   },
 
-  /* BADGE */
   badgeWrapper: {
     alignItems: "center",
-
-    marginBottom: 24,
+    marginBottom: 22,
   },
 
   badge: {
     backgroundColor: "#F5EBDD",
-
     borderWidth: 1,
     borderColor: "#E7D5BF",
-
-    paddingVertical: 13,
-    paddingHorizontal: 28,
-
+    paddingVertical: 12,
+    paddingHorizontal: 26,
     borderRadius: 40,
   },
 
   smallText: {
-    fontSize: 14,
-
-    fontWeight: "800",
-
-    letterSpacing: 4,
-
-    color: "#B58B63",
+    fontSize: 12,
+    fontWeight: "900",
+    letterSpacing: 3.5,
+    color: "#8B5E34",
   },
 
-  /* HEADING */
   heading: {
     textAlign: "center",
-
-    fontSize: 40,
-
+    fontSize: 33,
     fontWeight: "900",
-
     color: "#222",
-
-    lineHeight: 48,
-
-    marginBottom: 18,
+    lineHeight: 42,
+    marginBottom: 16,
+    paddingHorizontal: 20,
   },
 
-  /* SUBTITLE */
   subHeading: {
     textAlign: "center",
-
-    fontSize: 16,
-
-    lineHeight: 30,
-
+    fontSize: 15,
+    lineHeight: 26,
     color: "#666",
-
-    paddingHorizontal: 40,
-
-    marginBottom: 46,
+    paddingHorizontal: 34,
+    marginBottom: 40,
   },
 
-  /* CARD WRAPPER */
   cardWrapper: {
     gap: 24,
-
     paddingHorizontal: 22,
   },
 
-  /* CARD */
   card: {
-    backgroundColor: "#fff",
-
-    borderRadius: 34,
-
-    padding: 32,
+    backgroundColor: "#FFFFFF",
+    borderRadius: 30,
+    padding: 26,
 
     elevation: 4,
+    shadowColor: "#000",
+    shadowOpacity: 0.08,
+    shadowRadius: 14,
+    shadowOffset: {
+      width: 0,
+      height: 7,
+    },
   },
 
-  /* ICON */
+  cardTop: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    marginBottom: 24,
+  },
+
   iconBox: {
-    width: 78,
-    height: 78,
-
+    width: 70,
+    height: 70,
     borderRadius: 24,
-
     backgroundColor: "#F5EBDD",
-
     justifyContent: "center",
     alignItems: "center",
-
-    marginBottom: 26,
   },
 
-  /* CARD TITLE */
+  countBadge: {
+    backgroundColor: "#FFF7ED",
+    borderWidth: 1,
+    borderColor: "#F5E9DC",
+    borderRadius: 18,
+    paddingVertical: 8,
+    paddingHorizontal: 12,
+  },
+
+  countText: {
+    color: "#8B5E34",
+    fontSize: 12,
+    fontWeight: "900",
+  },
+
   cardTitle: {
-    fontSize: 30,
-
-    fontWeight: "800",
-
-    color: "#B58B63",
-
-    marginBottom: 16,
+    fontSize: 28,
+    fontWeight: "900",
+    color: "#8B5E34",
+    marginBottom: 14,
   },
 
-  /* CARD DESC */
   cardDesc: {
-    fontSize: 16,
-
-    lineHeight: 31,
-
+    fontSize: 15,
+    lineHeight: 27,
     color: "#555",
   },
 
-  /* LINK */
   linkRow: {
     flexDirection: "row",
-
     alignItems: "center",
-
     gap: 8,
-
-    marginTop: 28,
+    marginTop: 26,
   },
 
   linkText: {
-    fontSize: 15,
-
-    fontWeight: "700",
-
-    color: "#B58B63",
+    fontSize: 14,
+    fontWeight: "900",
+    color: "#8B5E34",
   },
 });

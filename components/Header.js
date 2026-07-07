@@ -5,174 +5,171 @@ import {
   Text,
   StyleSheet,
   TouchableOpacity,
-  TextInput,
   Modal,
+  Image,
 } from "react-native";
 
 import { Feather } from "@expo/vector-icons";
 import { router } from "expo-router";
 
-export default function Header() {
-  const [showMenu, setShowMenu] =
-    useState(false);
+const logoImage = require("../assets/images/logo.jpg");
 
-  const [showSearch, setShowSearch] =
-    useState(false);
+export default function Header() {
+  const [showMenu, setShowMenu] = useState(false);
 
   const goTo = (path) => {
     setShowMenu(false);
     router.push(path);
   };
 
+  const goToLogin = () => {
+    setShowMenu(false);
+    router.push("/login");
+  };
+
   return (
     <>
-      {/* HEADER */}
       <View style={styles.header}>
-        {/* LOGO */}
         <TouchableOpacity
+          style={styles.logoWrapper}
           activeOpacity={0.8}
           onPress={() => router.push("/")}
         >
-          <Text style={styles.logoSmall}>
-            DESA WISATA
-          </Text>
+          <View style={styles.logoImageBox}>
+            <Image
+              source={logoImage}
+              style={styles.logoImage}
+              resizeMode="cover"
+            />
+          </View>
 
-          <Text style={styles.logoMain}>
-            Gunungsari
-          </Text>
+          <View style={styles.logoTextBox}>
+            <Text style={styles.logoSmall}>DESA WISATA</Text>
+            <Text style={styles.logoMain}>Gunungsari</Text>
+          </View>
         </TouchableOpacity>
 
-        {/* ACTION */}
         <View style={styles.actions}>
           <TouchableOpacity
-            style={styles.iconButton}
-            onPress={() =>
-              setShowSearch(!showSearch)
-            }
+            style={styles.loginButton}
+            activeOpacity={0.85}
+            onPress={goToLogin}
           >
-            <Feather
-              name="search"
-              size={19}
-              color="#222"
-            />
+            <Text style={styles.loginText}>Login</Text>
           </TouchableOpacity>
 
           <TouchableOpacity
             style={styles.iconButton}
+            activeOpacity={0.85}
             onPress={() => setShowMenu(true)}
           >
-            <Feather
-              name="menu"
-              size={21}
-              color="#222"
-            />
+            <Feather name="menu" size={23} color="#5C3A21" />
           </TouchableOpacity>
         </View>
       </View>
 
-      {/* SEARCH */}
-      {showSearch && (
-        <View style={styles.searchWrapper}>
-          <Feather
-            name="search"
-            size={18}
-            color="#888"
-          />
-
-          <TextInput
-            placeholder="Cari wisata..."
-            placeholderTextColor="#999"
-            style={styles.searchInput}
-          />
-        </View>
-      )}
-
-      {/* DRAWER */}
       <Modal
         visible={showMenu}
         transparent
-        animationType="slide"
+        animationType="fade"
+        onRequestClose={() => setShowMenu(false)}
       >
-        <View style={styles.overlay}>
+        <View style={styles.modalWrapper}>
           <TouchableOpacity
-            style={{ flex: 1 }}
-            onPress={() =>
-              setShowMenu(false)
-            }
+            style={styles.modalOverlay}
+            activeOpacity={1}
+            onPress={() => setShowMenu(false)}
           />
 
-          <View style={styles.drawer}>
-            {/* CLOSE */}
-            <TouchableOpacity
-              style={styles.closeButton}
-              onPress={() =>
-                setShowMenu(false)
-              }
-            >
-              <Feather
-                name="x"
-                size={28}
-                color="#222"
-              />
-            </TouchableOpacity>
+          <View style={styles.menuBox}>
+            <View style={styles.menuHeader}>
+              <View style={styles.menuLogoRow}>
+                <View style={styles.menuLogoBox}>
+                  <Image
+                    source={logoImage}
+                    style={styles.menuLogoImage}
+                    resizeMode="cover"
+                  />
+                </View>
 
-            {/* MENU */}
-            <Text style={styles.drawerLabel}>
-              MENU
-            </Text>
+                <View>
+                  <Text style={styles.menuSmall}>MENU</Text>
+                  <Text style={styles.menuTitle}>Gunungsari</Text>
+                </View>
+              </View>
+
+              <TouchableOpacity
+                style={styles.closeButton}
+                activeOpacity={0.85}
+                onPress={() => setShowMenu(false)}
+              >
+                <Feather name="x" size={22} color="#5C3A21" />
+              </TouchableOpacity>
+            </View>
 
             <TouchableOpacity
+              style={styles.menuItem}
+              activeOpacity={0.85}
               onPress={() => goTo("/")}
             >
-              <Text style={styles.menuItem}>
-                Home
-              </Text>
+              <View style={styles.menuIconBox}>
+                <Feather name="home" size={19} color="#8B5E34" />
+              </View>
+              <Text style={styles.menuText}>Home</Text>
             </TouchableOpacity>
 
             <TouchableOpacity
-              onPress={() =>
-                goTo("/wisata")
-              }
+              style={styles.menuItem}
+              activeOpacity={0.85}
+              onPress={() => goTo("/wisata")}
             >
-              <Text style={styles.menuItem}>
-                Wisata
-              </Text>
+              <View style={styles.menuIconBox}>
+                <Feather name="map" size={19} color="#8B5E34" />
+              </View>
+              <Text style={styles.menuText}>Wisata</Text>
             </TouchableOpacity>
 
             <TouchableOpacity
-              onPress={() =>
-                goTo("/paket")
-              }
+              style={styles.menuItem}
+              activeOpacity={0.85}
+              onPress={() => goTo("/paket")}
             >
-              <Text style={styles.menuItem}>
-                Paket
-              </Text>
+              <View style={styles.menuIconBox}>
+                <Feather name="gift" size={19} color="#8B5E34" />
+              </View>
+              <Text style={styles.menuText}>Paket Wisata</Text>
             </TouchableOpacity>
 
             <TouchableOpacity
-              onPress={() =>
-                goTo("/profil")
-              }
+              style={styles.menuItem}
+              activeOpacity={0.85}
+              onPress={() => goTo("/maps")}
             >
-              <Text style={styles.menuItem}>
-                Profil
-              </Text>
+              <View style={styles.menuIconBox}>
+                <Feather name="map-pin" size={19} color="#8B5E34" />
+              </View>
+              <Text style={styles.menuText}>Maps</Text>
             </TouchableOpacity>
 
-            {/* CONTACT */}
-            <View style={styles.contactBox}>
-              <Text style={styles.contactTitle}>
-                Contact
-              </Text>
+            <TouchableOpacity
+              style={styles.menuItem}
+              activeOpacity={0.85}
+              onPress={() => goTo("/profil")}
+            >
+              <View style={styles.menuIconBox}>
+                <Feather name="user" size={19} color="#8B5E34" />
+              </View>
+              <Text style={styles.menuText}>Profil</Text>
+            </TouchableOpacity>
 
-              <Text style={styles.contactText}>
-                gunungsari@madiun.id
-              </Text>
-
-              <Text style={styles.contactText}>
-                +62 812-0000-0000
-              </Text>
-            </View>
+            <TouchableOpacity
+              style={styles.menuLoginButton}
+              activeOpacity={0.88}
+              onPress={goToLogin}
+            >
+              <Text style={styles.menuLoginText}>Masuk ke Akun</Text>
+              <Feather name="arrow-right" size={18} color="#FFFFFF" />
+            </TouchableOpacity>
           </View>
         </View>
       </Modal>
@@ -182,127 +179,233 @@ export default function Header() {
 
 const styles = StyleSheet.create({
   header: {
-    backgroundColor: "#F8F5F1",
-
-    paddingTop: 60,
-    paddingBottom: 18,
-    paddingHorizontal: 22,
-
+    backgroundColor: "#F8F5F0",
+    paddingTop: 46,
+    paddingHorizontal: 14,
+    paddingBottom: 14,
     flexDirection: "row",
-    justifyContent: "space-between",
     alignItems: "center",
+    justifyContent: "space-between",
+  },
+
+  logoWrapper: {
+    flexDirection: "row",
+    alignItems: "center",
+    flex: 1,
+    marginRight: 6,
+  },
+
+  logoImageBox: {
+    width: 64,
+    height: 64,
+    borderRadius: 32,
+    backgroundColor: "#FFFFFF",
+    justifyContent: "center",
+    alignItems: "center",
+    overflow: "hidden",
+
+    elevation: 3,
+    shadowColor: "#000",
+    shadowOpacity: 0.1,
+    shadowRadius: 6,
+    shadowOffset: {
+      width: 0,
+      height: 3,
+    },
+  },
+
+  logoImage: {
+    width: 96,
+    height: 64,
+  },
+
+  logoTextBox: {
+    flex: 1,
+    marginLeft: 9,
   },
 
   logoSmall: {
-    color: "#888",
-    fontSize: 11,
-    letterSpacing: 2,
+    fontSize: 9,
+    letterSpacing: 2.2,
+    color: "#9A8F84",
+    fontWeight: "900",
     marginBottom: 4,
   },
 
   logoMain: {
-    color: "#222",
-    fontSize: 24,
-    fontWeight: "800",
-    letterSpacing: 0.5,
+    fontSize: 21,
+    color: "#222222",
+    fontWeight: "900",
   },
 
   actions: {
     flexDirection: "row",
-    gap: 10,
+    alignItems: "center",
+    gap: 7,
   },
 
-  iconButton: {
-    width: 40,
-    height: 40,
-
-    borderRadius: 30,
-
+  loginButton: {
+    backgroundColor: "#8B5E34",
+    paddingVertical: 11,
+    paddingHorizontal: 16,
+    borderRadius: 24,
     justifyContent: "center",
     alignItems: "center",
 
-    backgroundColor: "#fff",
-
-    borderWidth: 1,
-    borderColor: "#eee",
+    elevation: 3,
+    shadowColor: "#000",
+    shadowOpacity: 0.1,
+    shadowRadius: 6,
+    shadowOffset: {
+      width: 0,
+      height: 3,
+    },
   },
 
-  searchWrapper: {
-    marginHorizontal: 20,
-    marginTop: 10,
-    marginBottom: 15,
+  loginText: {
+    color: "#FFFFFF",
+    fontSize: 14,
+    fontWeight: "900",
+  },
 
-    backgroundColor: "#fff",
-
-    flexDirection: "row",
+  iconButton: {
+    width: 46,
+    height: 46,
+    borderRadius: 23,
+    backgroundColor: "#FFFFFF",
+    justifyContent: "center",
     alignItems: "center",
 
-    paddingHorizontal: 16,
-    paddingVertical: 14,
-
-    borderRadius: 30,
-
-    borderWidth: 1,
-    borderColor: "#eee",
+    elevation: 2,
+    shadowColor: "#000",
+    shadowOpacity: 0.08,
+    shadowRadius: 5,
+    shadowOffset: {
+      width: 0,
+      height: 3,
+    },
   },
 
-  searchInput: {
+  modalWrapper: {
     flex: 1,
-    marginLeft: 10,
-    fontSize: 15,
-    color: "#222",
+    justifyContent: "flex-start",
+    alignItems: "flex-end",
   },
 
-  overlay: {
-    flex: 1,
-    flexDirection: "row",
+  modalOverlay: {
+    ...StyleSheet.absoluteFillObject,
     backgroundColor: "rgba(0,0,0,0.35)",
   },
 
-  drawer: {
-    width: "78%",
-    backgroundColor: "#fff",
+  menuBox: {
+    width: 300,
+    backgroundColor: "#FFFFFF",
+    borderRadius: 26,
+    padding: 20,
+    marginTop: 82,
+    marginRight: 18,
 
-    paddingTop: 70,
-    paddingHorizontal: 28,
+    elevation: 10,
+    shadowColor: "#000",
+    shadowOpacity: 0.18,
+    shadowRadius: 14,
+    shadowOffset: {
+      width: 0,
+      height: 8,
+    },
+  },
+
+  menuHeader: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: 18,
+  },
+
+  menuLogoRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    flex: 1,
+  },
+
+  menuLogoBox: {
+    width: 58,
+    height: 58,
+    borderRadius: 29,
+    backgroundColor: "#F8F5F0",
+    justifyContent: "center",
+    alignItems: "center",
+    overflow: "hidden",
+    marginRight: 10,
+  },
+
+  menuLogoImage: {
+    width: 88,
+    height: 58,
+  },
+
+  menuSmall: {
+    fontSize: 10,
+    fontWeight: "800",
+    letterSpacing: 2,
+    color: "#9A8F84",
+    marginBottom: 4,
+  },
+
+  menuTitle: {
+    fontSize: 21,
+    fontWeight: "900",
+    color: "#222222",
   },
 
   closeButton: {
-    alignSelf: "flex-end",
-    marginBottom: 25,
-  },
-
-  drawerLabel: {
-    fontSize: 12,
-    letterSpacing: 3,
-    color: "#999",
-    marginBottom: 25,
+    width: 38,
+    height: 38,
+    borderRadius: 20,
+    backgroundColor: "#F8F5F0",
+    justifyContent: "center",
+    alignItems: "center",
   },
 
   menuItem: {
-    fontSize: 30,
-    fontWeight: "800",
-    color: "#222",
-    marginBottom: 22,
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 12,
+    paddingVertical: 13,
+    borderBottomWidth: 1,
+    borderBottomColor: "#F1F1F1",
   },
 
-  contactBox: {
-    marginTop: 45,
-    borderTopWidth: 1,
-    borderTopColor: "#eee",
-    paddingTop: 25,
+  menuIconBox: {
+    width: 36,
+    height: 36,
+    borderRadius: 14,
+    backgroundColor: "#F5E9DC",
+    justifyContent: "center",
+    alignItems: "center",
   },
 
-  contactTitle: {
+  menuText: {
     fontSize: 15,
-    fontWeight: "700",
-    color: "#222",
-    marginBottom: 12,
+    color: "#222222",
+    fontWeight: "800",
   },
 
-  contactText: {
-    color: "#666",
-    marginBottom: 6,
+  menuLoginButton: {
+    marginTop: 18,
+    backgroundColor: "#8B5E34",
+    borderRadius: 20,
+    paddingVertical: 14,
+    paddingHorizontal: 16,
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    gap: 8,
+  },
+
+  menuLoginText: {
+    color: "#FFFFFF",
     fontSize: 14,
+    fontWeight: "900",
   },
 });

@@ -1,48 +1,53 @@
-import { View, Text, Image, StyleSheet } from "react-native";
+import React from "react";
+
+import {
+  View,
+  Text,
+  StyleSheet,
+} from "react-native";
 
 export default function PaketHeader() {
   return (
-    <View style={styles.container}>
-      <Image source={require("../../assets/images/paket.jpg")} style={styles.image} />
-      <View style={styles.overlay} />
+    <View style={styles.headerBox}>
+      <Text style={styles.label}>PAKET WISATA</Text>
 
-      <View style={styles.textBox}>
-        <Text style={styles.small}>Paket Wisata</Text>
-        <Text style={styles.title}>Desa Wisata Gunungsari</Text>
-        <Text style={styles.desc}>
-          Pilih paket budaya, live-in, edukasi, kuliner, dan gathering.
-        </Text>
-      </View>
+      <Text style={styles.title}>
+        Pilih Paket Wisata Gunungsari
+      </Text>
+
+      <Text style={styles.description}>
+        Temukan paket wisata edukasi, budaya, kuliner, live in desa,
+        dan pariwisata hijau. Pilih paket untuk melihat detail dan
+        mengajukan kunjungan.
+      </Text>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { height: 260, position: "relative" },
-  image: { width: "100%", height: "100%" },
-  overlay: {
-    ...StyleSheet.absoluteFillObject,
-    backgroundColor: "rgba(0,0,0,0.45)",
+  headerBox: {
+    marginBottom: 20,
   },
-  textBox: {
-    position: "absolute",
-    bottom: 24,
-    left: 20,
-    right: 20,
-  },
-  small: {
-    color: "#e6c09b",
-    fontWeight: "700",
-  },
-  title: {
-    color: "#fff",
-    fontSize: 27,
+
+  label: {
+    fontSize: 11,
     fontWeight: "900",
-    marginTop: 4,
+    letterSpacing: 3,
+    color: "#0E7490",
+    marginBottom: 10,
   },
-  desc: {
-    color: "#eee",
-    marginTop: 8,
-    lineHeight: 20,
+
+  title: {
+    fontSize: 28,
+    fontWeight: "900",
+    color: "#1F2937",
+    lineHeight: 36,
+    marginBottom: 12,
+  },
+
+  description: {
+    fontSize: 15,
+    lineHeight: 25,
+    color: "#5B5B5B",
   },
 });

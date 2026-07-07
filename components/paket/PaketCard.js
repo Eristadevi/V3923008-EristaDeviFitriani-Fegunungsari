@@ -1,166 +1,253 @@
-import { useState } from "react";
+import React from "react";
+
 import {
   View,
   Text,
   StyleSheet,
   TouchableOpacity,
-  Linking,
+  ImageBackground,
 } from "react-native";
-import { Feather, Ionicons } from "@expo/vector-icons";
 
-export default function PaketCard({ title, type, price, desc, duration }) {
-  const [open, setOpen] = useState(false);
+import { Feather } from "@expo/vector-icons";
+import { LinearGradient } from "expo-linear-gradient";
+import { COLORS } from "./paketTheme";
 
-  const handleBooking = () => {
-    const phone = "6285233613596"; // GANTI dengan nomor WhatsApp admin
-    const message = `Halo, saya ingin booking paket wisata:
-    
-Paket: ${title}
-Jenis: ${type}
-Harga: ${price}
-Durasi: ${duration}
+const fallbackImage = require("../../assets/images/hero1.jpeg");
 
-Mohon info lebih lanjut.`;
+const getImageSource = (image) => {
+  if (!image) {
+    return fallbackImage;
+  }
 
-    const url = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
-    Linking.openURL(url);
+  if (typeof image === "string") {
+    return { uri: image };
+  }
+
+  return image;
+};
+
+const normalizeIconName = (icon) => {
+  const iconMap = {
+    leaf: "feather",
+    home: "home",
+    "map-pin": "map-pin",
+    camera: "camera",
+    coffee: "coffee",
+    "shopping-bag": "shopping-bag",
+    users: "users",
+    "book-open": "book-open",
+    music: "music",
+    feather: "feather",
   };
 
+  return iconMap[icon] || "map-pin";
+};
+
+export default function PaketCard({ paket, onPress }) {
+  const imageSource = getImageSource(paket?.image || paket?.imageUrl);
+  const iconName = normalizeIconName(paket?.icon);
+  const priceText = paket?.price || paket?.priceLabel || "Menyesuaikan";
+
   return (
-    <View style={styles.card}>
-      <View style={styles.topRow}>
-        <View style={styles.iconBox}>
-          <Feather name="map-pin" size={22} color="#fff" />
+    <TouchableOpacity
+      style={styles.card}
+      activeOpacity={0.88}
+      onPress={onPress}
+    >
+      <ImageBackground
+        source={imageSource}
+        style={styles.image}
+        imageStyle={styles.imageStyle}
+      >
+        <LinearGradient
+          colors={[
+            "rgba(0,0,0,0.04)",
+            "rgba(0,0,0,0.28)",
+            "rgba(0,0,0,0.72)",
+          ]}
+          style={styles.overlay}
+        >
+          <View style={styles.topBadge}>
+            <Feather name={iconName} size={14} color={COLORS.white} />
+
+            <Text style={styles.topBadgeText}>
+              {paket?.category || "Wisata"}
+            </Text>
+          </View>
+
+          <Text style={styles.imageTitle}>
+            {paket?.title || "Paket Wisata"}
+          </Text>
+
+          <Text style={styles.imageDesc} numberOfLines={2}>
+            {paket?.desc || "Paket wisata Desa Gunungsari."}
+          </Text>
+        </LinearGradient>
+      </ImageBackground>
+
+      <View style={styles.content}>
+        <View style={styles.infoRow}>
+          <View style={styles.badge}>
+            <Feather name="clock" size={13} color={COLORS.primary} />
+
+            <Text style={styles.badgeText}>
+              {paket?.duration || "-"}
+            </Text>
+          </View>
+
+          <View style={styles.badge}>
+            <Feather name="tag" size={13} color={COLORS.primary} />
+
+            <Text style={styles.badgeText}>
+              {priceText}
+            </Text>
+          </View>
         </View>
 
-        <View style={{ flex: 1 }}>
-          <Text style={styles.type}>{type}</Text>
-          <Text style={styles.title}>{title}</Text>
-          <Text style={styles.price}>{price}</Text>
+        <View style={styles.bottomRow}>
+          <Text style={styles.suitableText}>
+            Cocok untuk: {paket?.suitable || "-"}
+          </Text>
+
+          <View style={styles.detailLink}>
+            <Text style={styles.detailText}>Detail</Text>
+
+            <Feather
+              name="chevron-right"
+              size={17}
+              color={COLORS.primary}
+            />
+          </View>
         </View>
       </View>
-
-      <Text style={styles.desc}>{desc}</Text>
-
-      <View style={styles.infoRow}>
-        <Feather name="clock" size={16} color="#7a4f2b" />
-        <Text style={styles.infoText}>{duration}</Text>
-      </View>
-
-      <TouchableOpacity style={styles.detailButton} onPress={() => setOpen(!open)}>
-        <Text style={styles.detailButtonText}>
-          {open ? "Tutup Detail" : "Lihat Detail"}
-        </Text>
-      </TouchableOpacity>
-
-      {open && (
-        <View style={styles.detailBox}>
-          <Text style={styles.detailTitle}>Fasilitas / Kegiatan</Text>
-          <Text style={styles.detailText}>• Pendamping lokal</Text>
-          <Text style={styles.detailText}>• Edukasi budaya Gunungsari</Text>
-          <Text style={styles.detailText}>• Interaksi dengan warga</Text>
-          <Text style={styles.detailText}>• Pengalaman khas desa wisata</Text>
-        </View>
-      )}
-
-      <TouchableOpacity style={styles.bookingButton} onPress={handleBooking}>
-        <Ionicons name="logo-whatsapp" size={18} color="#fff" />
-        <Text style={styles.bookingText}>Booking Sekarang</Text>
-      </TouchableOpacity>
-    </View>
+    </TouchableOpacity>
   );
 }
 
 const styles = StyleSheet.create({
   card: {
-    marginHorizontal: 16,
-    marginBottom: 16,
-    backgroundColor: "#fff",
-    borderRadius: 22,
+    backgroundColor: COLORS.surface,
+    borderRadius: 26,
+    overflow: "hidden",
+
+    shadowColor: COLORS.shadow,
+    shadowOpacity: 0.08,
+    shadowRadius: 12,
+    shadowOffset: {
+      width: 0,
+      height: 6,
+    },
+    elevation: 3,
+  },
+
+  image: {
+    height: 185,
+    backgroundColor: "#e5e7eb",
+  },
+
+  imageStyle: {
+    resizeMode: "cover",
+  },
+
+  overlay: {
+    flex: 1,
+    justifyContent: "flex-end",
     padding: 18,
-    elevation: 4,
   },
-  topRow: {
-    flexDirection: "row",
-    gap: 12,
-    alignItems: "center",
-  },
-  iconBox: {
-    width: 48,
-    height: 48,
-    borderRadius: 24,
-    backgroundColor: "#c29a78",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  type: {
-    color: "#c29a78",
-    fontWeight: "800",
-    marginBottom: 3,
-  },
-  title: {
-    fontSize: 18,
-    fontWeight: "900",
-    color: "#111827",
-  },
-  price: {
-    marginTop: 5,
-    color: "#2e7d32",
-    fontWeight: "900",
-  },
-  desc: {
-    marginTop: 12,
-    color: "#555",
-    lineHeight: 20,
-  },
-  infoRow: {
-    marginTop: 12,
+
+  topBadge: {
+    alignSelf: "flex-start",
     flexDirection: "row",
     alignItems: "center",
     gap: 6,
+    backgroundColor: "rgba(255,255,255,0.22)",
+    paddingVertical: 7,
+    paddingHorizontal: 11,
+    borderRadius: 16,
+    marginBottom: 10,
   },
-  infoText: {
-    color: "#7a4f2b",
-    fontWeight: "700",
-  },
-  detailButton: {
-    marginTop: 14,
-    backgroundColor: "#111827",
-    paddingVertical: 11,
-    borderRadius: 20,
-    alignItems: "center",
-  },
-  detailButtonText: {
-    color: "#fff",
-    fontWeight: "800",
-  },
-  detailBox: {
-    marginTop: 14,
-    backgroundColor: "#f8f1e8",
-    borderRadius: 14,
-    padding: 14,
-  },
-  detailTitle: {
+
+  topBadgeText: {
+    color: COLORS.white,
+    fontSize: 11,
     fontWeight: "900",
-    color: "#7a4f2b",
-    marginBottom: 8,
+    letterSpacing: 1,
   },
-  detailText: {
-    color: "#444",
-    marginBottom: 5,
+
+  imageTitle: {
+    color: COLORS.white,
+    fontSize: 21,
+    fontWeight: "900",
+    lineHeight: 27,
+    marginBottom: 6,
+
+    textShadowColor: "rgba(0,0,0,0.35)",
+    textShadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    textShadowRadius: 8,
   },
-  bookingButton: {
-    marginTop: 12,
-    backgroundColor: "#25D366",
-    paddingVertical: 12,
-    borderRadius: 20,
-    alignItems: "center",
-    justifyContent: "center",
+
+  imageDesc: {
+    color: "rgba(255,255,255,0.92)",
+    fontSize: 13,
+    lineHeight: 20,
+
+    textShadowColor: "rgba(0,0,0,0.30)",
+    textShadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    textShadowRadius: 6,
+  },
+
+  content: {
+    padding: 18,
+  },
+
+  infoRow: {
     flexDirection: "row",
-    gap: 8,
+    flexWrap: "wrap",
+    gap: 10,
+    marginBottom: 14,
   },
-  bookingText: {
-    color: "#fff",
+
+  badge: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 5,
+    backgroundColor: COLORS.soft,
+    paddingVertical: 7,
+    paddingHorizontal: 11,
+    borderRadius: 14,
+  },
+
+  badgeText: {
+    fontSize: 11,
+    fontWeight: "800",
+    color: COLORS.primary,
+  },
+
+  bottomRow: {
+    gap: 12,
+  },
+
+  suitableText: {
+    fontSize: 13,
+    lineHeight: 20,
+    color: COLORS.subtext,
+  },
+
+  detailLink: {
+    alignSelf: "flex-start",
+    flexDirection: "row",
+    alignItems: "center",
+  },
+
+  detailText: {
+    fontSize: 13,
     fontWeight: "900",
+    color: COLORS.primary,
   },
 });
