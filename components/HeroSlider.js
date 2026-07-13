@@ -15,7 +15,7 @@ import { router } from "expo-router";
 
 const slides = [
   {
-    image: require("../assets/images/desaa.jpeg"),
+    image: require("../assets/images/desaa.png"),
     title: "Wisata Gunungsari",
     desc: "Menjelajah budaya dan kearifan lokal desa",
   },
